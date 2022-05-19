@@ -17,7 +17,13 @@ const Table = (props) => {
       </tr>
       {
         table.map(slot => (
-          <tr onClick={ () => props.handleTeam(slot.team.id)} key={slot.team.id}>
+          <tr
+            onClick={ () => { props.handleTeam(slot.team.id);
+              props.handleCoach(slot.team.id);
+              props.handleTeamInfo(slot.team.id)
+            }}
+            key={slot.team.id}
+          >
             <td>{place++}<img src={slot.team.logo} className='logo'/>{slot.team.name}</td>
             <td>{slot.all.played}</td>
             <td>{slot.all.win}</td>
