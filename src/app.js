@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Table from './components/table';
 import Selector from './components/selector';
+import Table from './components/table';
 import Team from './components/team';
+import Player from './components/player';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -13,13 +14,18 @@ class App extends Component {
       table: [],
       team: [],
       coach: {},
-      venue: {}
+      player: {},
+      venue: {},
+      playerClicked: false,
+      number: 0
     }
     this.handleSelect = this.handleSelect.bind(this);
     this.handleTeam = this.handleTeam.bind(this);
     this.handleCoach = this.handleCoach.bind(this);
     this.handleTeamInfo = this.handleTeamInfo.bind(this);
     this.handlePlayer = this.handlePlayer.bind(this);
+    this.handleNumber = this.handleNumber.bind(this);
+    this.handleReturn = this.handleReturn.bind(this);
   }
 
   componentWillMount() {
@@ -51,7 +57,7 @@ class App extends Component {
     };
     axios.request(options)
       .then(res => res.data.response[0].league.standings[0])
-      .then(table => this.setState({ table }))
+      .then(table => this.setState({ table, team: [], playerClicked: false }))
       .catch(err => console.log(err))
   }
 
@@ -67,7 +73,7 @@ class App extends Component {
     };
     axios.request(squad)
     .then(res => res.data.response[0].players)
-    .then(team => this.setState({ team }))
+    .then(team => this.setState({ team, playerClicked: false }))
     .catch(err => console.log(err))
   }
 
@@ -118,14 +124,27 @@ class App extends Component {
       }
     };
     axios.request(player)
-      .then(res => console.log(res.data.response[0]))
+      .then(res => res.data.response[0])
+      .then(player => this.setState({ player, playerClicked: !this.state.playerClicked }))
       .catch(err => console.log(err))
+  }
+
+  handleNumber(number) {
+    this.setState({
+      number
+    })
+  }
+
+  handleReturn() {
+    this.setState({
+      playerClicked: !this.state.playerClicked
+    })
   }
   
   render() {
     return (
       <div className='container'>
-        <h1>Football Table</h1>
+        <h1>Futbolero</h1>
         <Selector
           handleSelect={ this.handleSelect }
         />
@@ -136,12 +155,22 @@ class App extends Component {
             handleCoach={ this.handleCoach }
             handleTeamInfo={ this.handleTeamInfo }
           />
-          <Team
-            team={ this.state.team }
-            coach={ this.state.coach }
-            venue={ this.state.venue }
-            handlePlayer={ this.handlePlayer }
-          />
+          {
+            !this.state.playerClicked ?
+              <Team
+                team={ this.state.team }
+                coach={ this.state.coach }
+                venue={ this.state.venue }
+                handlePlayer={ this.handlePlayer }
+                handleNumber={ this.handleNumber }
+              />
+            :
+              <Player
+                player={ this.state.player }
+                number={ this.state.number }
+                handleReturn={ this.handleReturn }
+              />
+          }
         </div>
       </div>
     )

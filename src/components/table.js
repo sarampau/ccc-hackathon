@@ -18,20 +18,21 @@ const Table = (props) => {
       {
         table.map(slot => (
           <tr
+            className='slot'
+            key={slot.team.id}
             onClick={ () => { props.handleTeam(slot.team.id);
               props.handleCoach(slot.team.id);
               props.handleTeamInfo(slot.team.id)
             }}
-            key={slot.team.id}
           >
-            <td>{place++}<img src={slot.team.logo} className='logo'/>{slot.team.name}</td>
-            <td>{slot.all.played}</td>
-            <td>{slot.all.win}</td>
-            <td>{slot.all.draw}</td>
-            <td>{slot.all.lose}</td>
-            <td>{slot.all.goals.for}-{slot.all.goals.against}</td>
-            <td>{slot.goalsDiff}</td>
-            <td>{slot.points}</td>
+            <td className='team-name'>{place++}<img src={slot.team.logo} className='logo'/>{slot.team.name}</td>
+            <td className='team-stats'>{slot.all.played}</td>
+            <td className='team-stats'>{slot.all.win}</td>
+            <td className='team-stats'>{slot.all.draw}</td>
+            <td className='team-stats'>{slot.all.lose}</td>
+            <td className='team-stats'>{slot.all.goals.for}-{slot.all.goals.against}</td>
+            <td className='team-stats'>{slot.goalsDiff}</td>
+            <td className='team-stats'>{slot.points}</td>
           </tr>
         ))
       }
