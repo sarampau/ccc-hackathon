@@ -32,7 +32,7 @@ class App extends Component {
     const options = {
       method: 'GET',
       url: 'https://api-football-v1.p.rapidapi.com/v3/standings',
-      params: {season: '2021', league: '39'},
+      params: {season: '2022', league: '39'},
       headers: {
         'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com',
         'X-RapidAPI-Key': `${API_KEY}`
@@ -45,11 +45,16 @@ class App extends Component {
   }
 
   handleSelect(e) {
+    let month = new Date().getMonth();
+    let season = new Date().getFullYear();
     const league = e.target.value;
+    if (month <= 6) {
+      season--
+    }
     const options = {
       method: 'GET',
       url: 'https://api-football-v1.p.rapidapi.com/v3/standings',
-      params: {season: '2021', league: `${league}`},
+      params: {season: `${season}`, league: `${league}`},
       headers: {
         'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com',
         'X-RapidAPI-Key': `${API_KEY}`
